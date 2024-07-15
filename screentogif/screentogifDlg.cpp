@@ -8,9 +8,6 @@
 #include"AreaCapture.h"
 #include "RectRecord.h"
 
-
-
-
 //#ifdef _DEBUG
 //#define new DEBUG_NEW
 //#endif
@@ -48,16 +45,10 @@ END_MESSAGE_MAP()
 
 
 // CscreentogifDlg dialog
-
-
-
-
 CscreentogifDlg::CscreentogifDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CscreentogifDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-
-
 }
 
 void CscreentogifDlg::DoDataExchange(CDataExchange* pDX)
@@ -78,7 +69,6 @@ BEGIN_MESSAGE_MAP(CscreentogifDlg, CDialogEx)
 	ON_WM_ACTIVATEAPP()
 	ON_WM_HSCROLL()
 	ON_EN_CHANGE(IDC_FRAME_RATE, &CscreentogifDlg::OnEnChangeFrameRate)
-	//ON_NOTIFY(NM_CUSTOMDRAW, IDC_SLIDER_FRAMERATE, &CscreentogifDlg::OnNMCustomdrawSliderFramerate)
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
@@ -90,20 +80,22 @@ LRESULT CscreentogifDlg::TriggerRectangle(WPARAM wparam,LPARAM lparam)
 	{
 		delete m_pRectWnd;
 		m_pRectWnd=NULL;
-
-
 	}
 	if (!m_pRectWnd) 
 	{
-		m_pRectWnd = new CRectRecord();
-
-
-		m_pRectWnd->CreateEx(WS_EX_LAYERED | WS_EX_TOPMOST,AfxRegisterWndClass(0, AfxGetApp()->LoadStandardCursor(IDC_CROSS)),NULL,WS_POPUP,CRect(0,0,0,0),(CWnd*)this,NULL,NULL);
-
+		m_pRectWnd = new CRectRecord(); 
+		m_pRectWnd->CreateEx(WS_EX_LAYERED | WS_EX_TOPMOST,
+			AfxRegisterWndClass(0, AfxGetApp()->LoadStandardCursor(IDC_CROSS)),
+			NULL,WS_POPUP,CRect(0,0,0,0),
+			(CWnd*)this,NULL,NULL); 
 		m_pRectWnd->SetLayeredWindowAttributes(RGB(0, 0, 0), 255, LWA_ALPHA | LWA_COLORKEY);
 	}
-	m_pRectWnd->SetWindowPos(&CWnd::wndTop, m_rcRecordingRect->left - 2, m_rcRecordingRect->top - 2, 
-		m_rcRecordingRect->right - m_rcRecordingRect->left + 4, m_rcRecordingRect->bottom - m_rcRecordingRect->top + 4, SWP_NOACTIVATE);
+	m_pRectWnd->SetWindowPos(&CWnd::wndTop,
+							m_rcRecordingRect->left - 2, 
+							m_rcRecordingRect->top - 2,
+							m_rcRecordingRect->right - m_rcRecordingRect->left + 4, 
+							m_rcRecordingRect->bottom - m_rcRecordingRect->top + 4, 
+							SWP_NOACTIVATE);
 	m_pRectWnd->ShowWindow(SW_NORMAL);
 	m_pRectWnd->UpdateWindow();
 
@@ -128,6 +120,7 @@ BOOL CscreentogifDlg::OnInitDialog()
 		BOOL bNameValid;
 		CString strAboutMenu;
 		bNameValid = strAboutMenu.LoadString(IDS_ABOUTBOX);
+
 		ASSERT(bNameValid);
 		if (!strAboutMenu.IsEmpty())
 		{
@@ -143,20 +136,12 @@ BOOL CscreentogifDlg::OnInitDialog()
 
 	m_pRectWnd=NULL;
 	m_AreaCptWnd=NULL; 
-
 	m_pGIFEncoder = NULL;
 	m_bRecording = FALSE;
-	//ZeroMemory(m_rcRecordingRect,sizeof(RECT));
 	m_rcRecordingRect=NULL;
-	/*Gdiplus::GdiplusStartupInput gdiSI;
-	Gdiplus::GdiplusStartup(&gdiToken, &gdiSI, NULL);*/
-
-
-
+	
 	m_sliderFrameRate.SetRange(30, 60, TRUE);
 	m_sliderFrameRate.SetPos(30);
-
-
 	m_FrameRateEdt.SetWindowTextW(L"30");
 
 	RECT rt={0};
@@ -215,18 +200,12 @@ HCURSOR CscreentogifDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-
 void CscreentogifDlg::OnBnClickedAreatocapture()
 {
-
 	CRect mainWndRect;
 	GetWindowRect(&mainWndRect);
 	SetWindowPos(&CWnd::wndBottom,mainWndRect.left,mainWndRect.top,mainWndRect.Width(),mainWndRect.Height(),0);
-
-
-
-
+	
 	if (m_pRectWnd->GetSafeHwnd()) 
 	{ 
 		m_pRectWnd->ShowWindow( SW_HIDE);
@@ -241,9 +220,6 @@ void CscreentogifDlg::OnBnClickedAreatocapture()
 	m_AreaCptWnd->SetWindowPos(&CWnd::wndTopMost, ::GetSystemMetrics(SM_XVIRTUALSCREEN), ::GetSystemMetrics(SM_YVIRTUALSCREEN), ::GetSystemMetrics(SM_CXVIRTUALSCREEN), ::GetSystemMetrics(SM_CYVIRTUALSCREEN), SWP_NOSENDCHANGING);
 	m_AreaCptWnd->ShowWindow(SW_NORMAL);
 	m_AreaCptWnd->UpdateWindow();
-
-
-
 }
 
 
@@ -292,9 +268,7 @@ void CscreentogifDlg::OnBnClickedRecord()
 			delete m_pGIFEncoder;
 			m_pGIFEncoder = NULL;
 			UpdateCTRLs(FALSE);
-
 		}
-
 	}
 
 	// TODO: Add your control notification handler code here
@@ -307,8 +281,6 @@ void CscreentogifDlg::UpdateCTRLs(bool nEnableDisable)
 	GetDlgItem(IDC_STOPRECORD)->EnableWindow(nEnableDisable);
 	GetDlgItem(IDC_SLIDER_FRAMERATE)->EnableWindow(nEnableDisable);
 	GetDlgItem(IDC_FRAME_RATE)->EnableWindow(nEnableDisable);
-
-
 }
 
 void CscreentogifDlg::OnBnClickedStoprecord()
@@ -333,11 +305,7 @@ void CscreentogifDlg::OnBnClickedStoprecord()
 	}
 	UpdateCTRLs(true);
 	GetDlgItem(IDC_RECORD)->EnableWindow(TRUE);
-
-	// TODO: Add your control notification handler code here
 }
-
-
 
 void CscreentogifDlg::OnActivateApp(BOOL bActive, DWORD dwThreadID)
 {
@@ -366,9 +334,6 @@ void CscreentogifDlg::OnActivateApp(BOOL bActive, DWORD dwThreadID)
 
 void CscreentogifDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-	// TODO: Add your message handler code here and/or call default
-
-	// You can have multiple sliders: Check which one sent the notification  
 	if (IDC_SLIDER_FRAMERATE == pScrollBar->GetDlgCtrlID())
 	{
 		CString strSliderValue;
@@ -376,8 +341,7 @@ void CscreentogifDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		strSliderValue.Format(L"%d", iValue); 
 		m_FrameRateEdt.SetWindowText(strSliderValue); // Change CEdit Value
 	}
-
-
+	
 	CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
@@ -439,11 +403,6 @@ void CscreentogifDlg::OnTimer(UINT_PTR nIDEvent)
 				delete bmp; 
 			}
 		}
-
-
-
-
-
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }
@@ -451,7 +410,6 @@ void CscreentogifDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CscreentogifDlg::OnDestroy()
 {
-
 	m_bRecording = FALSE;
 	KillTimer(1);
 	if (m_pGIFEncoder) 
@@ -465,3 +423,4 @@ void CscreentogifDlg::OnDestroy()
 
 	// TODO: Add your message handler code here
 }
+s

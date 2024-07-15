@@ -15,15 +15,11 @@ IMPLEMENT_DYNAMIC(CAreaCapture, CWnd)
 	CAreaCapture::CAreaCapture()
 {
 	m_bDrag=FALSE;
-	//m_bDown=FALSE;
 	ZeroMemory( &m_posStart,sizeof(CPoint));
 	ZeroMemory( &m_OldRect,sizeof(CRect));
-	//ZeroMemory( &m_rcRecordingRect,sizeof(RECT));
 	::SetRect(&m_rcRecordingRect, 0, 0, GetSystemMetrics(SM_CXVIRTUALSCREEN), GetSystemMetrics(SM_CYVIRTUALSCREEN));
-::OffsetRect(&m_rcRecordingRect, GetSystemMetrics(SM_XVIRTUALSCREEN), GetSystemMetrics(SM_YVIRTUALSCREEN));
-
+	::OffsetRect(&m_rcRecordingRect, GetSystemMetrics(SM_XVIRTUALSCREEN), GetSystemMetrics(SM_YVIRTUALSCREEN));
 	
-
 }
 
 CAreaCapture::~CAreaCapture()
@@ -42,20 +38,14 @@ END_MESSAGE_MAP()
 
 void CAreaCapture::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	
 	pdc = GetDC();
 	SetCapture(); 
 	memcpy(&m_posStart,&point,sizeof(CPoint));
 	return CWnd::OnLButtonDown(nFlags, point);
-
-	
 }
-
 
 void CAreaCapture::OnLButtonUp(UINT nFlags, CPoint point)
 {
-
-
 	// TODO: Add your message handler code here and/or call default
 	if (GetCapture() == this) 
 	{
@@ -90,8 +80,6 @@ void CAreaCapture::OnLButtonUp(UINT nFlags, CPoint point)
 		::SendMessage( ::GetParent(m_hWnd), WM_APP, 0, (LPARAM)&m_rcRecordingRect);
 		
 	}
-
-
 	CWnd::OnLButtonUp(nFlags, point);
 }
 
@@ -125,14 +113,10 @@ void CAreaCapture::OnMouseMove(UINT nFlags, CPoint point)
 			newRect.bottom = max(point.y, m_posStart.y);
 			ScreenToClient(&newRect);
 			//::ScreenToClient(m_hWnd,((LPPOINT)&rect) + 1); 
-
 			buf.Format(TEXT("##### NEW RectRgn LEFT = %d TOP = %d RIGHT = %d BOTTOM =%d##### "),newRect.left,newRect.top,newRect.right,newRect.bottom);
 			OutputDebugString(buf);
-
 			
-			
-			rgn2.CreateRectRgnIndirect(&newRect);
-			
+			rgn2.CreateRectRgnIndirect(&newRect);			
 			rgn1.CombineRgn(&rgn1, &rgn2, RGN_DIFF); 
 		
 			CBrush brush;			

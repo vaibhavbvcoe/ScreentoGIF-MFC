@@ -45,6 +45,4 @@ void CRectRecord::OnPaint()
 	SelectObject(hdc, hOldBrush);
 	SelectObject(hdc, hOldPen);
 	EndPaint(&ps);
-
-
 }

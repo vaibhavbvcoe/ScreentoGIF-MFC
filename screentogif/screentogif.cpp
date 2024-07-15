@@ -22,12 +22,6 @@ END_MESSAGE_MAP()
 
 CscreentogifApp::CscreentogifApp()
 {
-	
-	
-	
-	
-
-
 	// support Restart Manager
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
 
